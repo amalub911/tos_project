@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=1920, initial-scale=1.0" name="viewport"/>
+    <title>Terms of Service Intelligence Hub</title>
+    <!-- Tailwind CSS v3 with Plugins -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+          theme: {
+            extend: {
+              colors: {
+                primary: '#4361ee',
+                'nexus-indigo': '#4361ee',
+                'nexus-dark': '#0a0b10',
+                'nexus-glass': 'rgba(17, 24, 39, 0.7)',
+                danger: '#ef4444',
+                surface: '#0f172a',
+              },
+              animation: {
+                'shimmer': 'shimmer 3s infinite linear',
+                'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                'slide-right': 'slideRight 0.5s ease-out forwards',
+                'fade-in': 'fadeIn 1s ease-out forwards',
+                'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
+                'spin-slow': 'spin 12s linear infinite',
+                'spin-reverse': 'spin-reverse 15s linear infinite',
+                'float': 'float 6s ease-in-out infinite',
+                'letter-spacing': 'letterSpacing 3s ease-in-out infinite',
+                'morph': 'morph 8s ease-in-out infinite',
+              },
+              keyframes: {
+                shimmer: {
+                  '0%': { backgroundPosition: '-200% center' },
+                  '100%': { backgroundPosition: '200% center' },
+                },
+                slideRight: {
+                  '0%': { opacity: 0, transform: 'translateX(-20px)' },
+                  '100%': { opacity: 1, transform: 'translateX(0)' },
+                },
+                fadeIn: {
+                  '0%': { opacity: '0', transform: 'translateY(10px)' },
+                  '100%': { opacity: '1', transform: 'translateY(0)' },
+                },
+                pulseGlow: {
+                  '0%, 100%': { opacity: '0.6', textShadow: '0 0 8px rgba(67, 97, 238, 0.4)' },
+                  '50%': { opacity: '1', textShadow: '0 0 20px rgba(67, 97, 238, 0.8)' },
+                },
+                'spin-reverse': {
+                  from: { transform: 'rotate(360deg)' },
+                  to: { transform: 'rotate(0deg)' }
+                },
+                float: {
+                  '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+                  '50%': { transform: 'translateY(-20px) rotate(5deg)' },
+                },
+                letterSpacing: {
+                  '0%, 100%': { letterSpacing: '0.2em', opacity: '0.4' },
+                  '50%': { letterSpacing: '0.5em', opacity: '0.9' },
+                },
+                morph: {
+                  '0%, 100%': { borderRadius: '40% 60% 70% 30% / 40% 40% 60% 50%' },
+                  '33%': { borderRadius: '70% 30% 50% 50% / 30% 30% 70% 70%' },
+                  '66%': { borderRadius: '30% 70% 70% 30% / 50% 60% 30% 40%' },
+                }
+              }
+            }
+          }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono&display=swap');
+        
+        body { font-family: 'Inter', sans-serif; height: 100vh; width: 100vw; overflow: hidden; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+        @keyframes magnetic-pull {
+          0% { transform: scale(1); }
+          100% { transform: scale(1.05); }
+        }
+
+        .magnetic-hover:hover {
+          animation: magnetic-pull 0.2s ease-out forwards;
+          box-shadow: 0 0 25px rgba(67, 97, 238, 0.5);
+        }
+
+        .glass-effect {
+          background: rgba(255, 255, 255, 0.05);
+          backdrop-filter: blur(30px);
+          -webkit-backdrop-filter: blur(30px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .shimmer-text {
+          background: linear-gradient(90deg, #4361ee, #4cc9f0, #4361ee);
+          background-size: 200% auto;
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: rgba(255, 255, 255, 0.05);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #4361ee;
+          border-radius: 10px;
+        }
+
+        .risk-needle {
+          transition: transform 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+          transform-origin: bottom center;
+        }
+
+        .clause-highlight {
+          position: relative;
+          display: inline;
+          border-radius: 4px;
+          transition: all 0.2s;
+          padding: 2px 0;
+        }
+        
+        .clause-highlight.unfair {
+            background: rgba(239, 68, 68, 0.15);
+            border-bottom: 2px solid #ef4444;
+            cursor: help;
+        }
+        
+        .clause-highlight.unfair.high-risk { background: rgba(239, 68, 68, 0.25); border-bottom-color: #ef4444; }
+        .clause-highlight.unfair.med-risk { background: rgba(249, 115, 22, 0.2); border-bottom-color: #f97316; }
+        .clause-highlight.unfair.low-risk { background: rgba(234, 179, 8, 0.15); border-bottom-color: #eab308; }
+
+        /* Light Mode for Reading Area */
+        #annotated-text.light-mode {
+            background-color: #ffffff !important;
+            color: #1e293b !important;
+        }
+        
+        #annotated-text.light-mode .clause-highlight.unfair.high-risk { background: rgba(239, 68, 68, 0.15); }
+        #annotated-text.light-mode .clause-highlight.unfair.med-risk { background: rgba(249, 115, 22, 0.1); }
+        #annotated-text.light-mode .clause-highlight.unfair.low-risk { background: rgba(234, 179, 8, 0.1); }
+        #annotated-text.light-mode .clause-highlight:not(.unfair):hover { background: rgba(0,0,0,0.05); }
+
+        @keyframes slideRight {
+            0% { opacity: 0; transform: translateX(-20px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Loading animation styles */
+        .crystalline-object {
+          width: 280px;
+          height: 280px;
+          position: relative;
+          transform-style: preserve-3d;
+          perspective: 1000px;
+        }
+
+        .crystal-layer {
+          position: absolute;
+          inset: 0;
+          border: 1px solid rgba(67, 97, 238, 0.3);
+          background: radial-gradient(circle at 30% 30%, rgba(67, 97, 238, 0.1), transparent);
+          backdrop-filter: blur(2px);
+          transition: all 2s ease-in-out;
+        }
+
+        .loading-label {
+          font-family: 'Inter', sans-serif;
+          font-weight: 200;
+          text-transform: uppercase;
+        }
+
+        .percentage-display {
+          font-family: 'Inter', sans-serif;
+          font-weight: 700;
+          font-size: 3.5rem;
+          background: linear-gradient(to bottom, #ffffff 30%, rgba(67, 97, 238, 0.5) 100%);
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          filter: drop-shadow(0 0 15px rgba(67, 97, 238, 0.4));
+          line-height: 1;
+        }
+
+        @keyframes dataShimmer {
+          0%, 100% { color: rgba(255, 255, 255, 0.9); text-shadow: 0 0 0px rgba(67, 97, 238, 0); }
+          50% { color: #ffffff; text-shadow: 0 0 15px rgba(67, 97, 238, 0.6), 0 0 30px rgba(67, 97, 238, 0.2); }
+        }
+
+        @keyframes neuralPulse {
+          0%, 100% { transform: scale(1); opacity: 0.3; }
+          50% { transform: scale(1.5); opacity: 0.7; }
+        }
+
+        .neural-node {
+          width: 4px;
+          height: 4px;
+          background: #4361ee;
+          border-radius: 50%;
+          position: relative;
+        }
+        .neural-node::after {
+          content: '';
+          position: absolute;
+          inset: -4px;
+          border: 1px solid #4361ee;
+          border-radius: 50%;
+          animation: neuralPulse 2s ease-in-out infinite;
+        }
+        @keyframes moveRight {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(400%); }
+        }
+
+        .stagger-in { animation: slideRight 0.5s ease-out forwards; opacity: 0; }
+
+        /* Pointing/Flash Effect */
+        @keyframes flash-point {
+            0% { box-shadow: 0 0 0 0 rgba(67, 97, 238, 0.8); transform: scale(1); }
+            50% { box-shadow: 0 0 30px 10px rgba(67, 97, 238, 0.4); transform: scale(1.02); }
+            100% { box-shadow: 0 0 0 0 rgba(67, 97, 238, 0); transform: scale(1); }
+        }
+        .flash-highlight {
+            animation: flash-point 1s ease-out;
+            z-index: 10;
+            border-radius: 4px;
+        }
+
+        /* System Status Dot */
+        .dot { width: 8px; height: 8px; border-radius: 50%; background-color: #64748b; transition: all 0.3s; }
+        .dot.online { background-color: #22c55e; box-shadow: 0 0 8px #22c55e; }
+        .dot.offline { background-color: #ef4444; }
+
+        /* Tooltip */
+        .custom-tooltip {
+            visibility: hidden;
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%) scale(0.8);
+            background-color: #1e293b;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            width: 280px;
+            white-space: normal;
+            z-index: 100;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+            line-height: 1.5;
+            opacity: 0;
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: none;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .clause-highlight.unfair:hover .custom-tooltip {
+            visibility: visible;
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+
+        .custom-tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -6px;
+            border-width: 6px;
+            border-style: solid;
+            border-color: #1e293b transparent transparent transparent;
+        }
+
+        /* Print Mode Override */
+        @media print {
+            body { overflow: visible !important; height: auto !important; background: white !important; color: black !important; }
+            #interface-alpha, #bg-video, #loader, #back-to-top, .magnetic-hover, aside:not(.w-\[380px\]), header button, #theme-toggle, #new-analysis-btn { display: none !important; }
+            #app-root, #interface-beta { position: relative !important; display: block !important; opacity: 1 !important; visibility: visible !important; }
+            .glass-effect { border: none !important; backdrop-filter: none !important; background: white !important; box-shadow: none !important; }
+            #annotated-text { overflow: visible !important; height: auto !important; color: black !important; padding: 0 !important; }
+            .clause-highlight.unfair { border-bottom: 2px solid red !important; }
+            .w-\[380px\] { width: 100% !important; border-bottom: 2px solid #eee !important; margin-bottom: 2rem !important; }
+        }
+
+        /* Desktop Only Enforcement */
+        @media (max-width: 1024px) {
+          #desktop-warning { display: flex !important; }
+          #app-root { display: none; }
+        }
+        
+        .hidden { display: none !important; }
+        .opacity-0 { opacity: 0; }
+        .opacity-100 { opacity: 1; }
+    </style>
+</head>
+<body class="bg-surface text-white">
+
+    <!-- Desktop Warning Overlay -->
+    <div class="hidden fixed inset-0 z-[9999] bg-black flex-col items-center justify-center text-center p-10" id="desktop-warning">
+        <h2 class="text-3xl font-bold mb-4 text-primary">Desktop Optimization Required</h2>
+        <p class="text-gray-400 max-w-md">This Intelligence Hub is designed for high-end desktop environments (1920x1080+). Please switch to a larger display to access LEXIS.AI.</p>
+    </div>
+
+    <div id="app-root" class="relative w-screen h-screen">
+        
+        <!-- BEGIN: Interface Alpha (Gateway) -->
+        <main class="absolute inset-0 flex flex-col items-center justify-center transition-all duration-700 z-10" id="interface-alpha">
+            <!-- Cinematic Background -->
+            <div class="absolute inset-0 z-0 bg-black">
+                <video autoplay class="w-full h-full object-cover opacity-25" loop muted playsinline id="bg-video">
+                    <source src="http://127.0.0.1:5000/static/background.mp4" type="video/mp4"/>
+                </video>
+            </div>
+
+            <!-- Header / Status -->
+            <div class="absolute top-12 left-12 right-12 flex justify-between items-center z-20">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-primary rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(67,97,238,0.6)]">
+                        <svg id="site-symbol" class="w-8 h-8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    </div>
+                    <span class="text-2xl font-bold tracking-tighter text-white">ToS Intelligence Hub</span>
+                </div>
+                <div class="flex items-center gap-3 bg-white/5 px-4 py-2 rounded-full border border-white/10">
+                    <span id="status-dot" class="dot"></span>
+                    <span id="status-text" class="text-xs uppercase tracking-widest text-gray-400 font-bold">Connecting...</span>
+                </div>
+            </div>
+
+            <!-- Command Center Card Elements -->
+            <header class="relative z-10 w-full max-w-[850px] px-12 text-center mb-10">
+                    <h1 class="text-6xl font-black mb-4 tracking-tight">
+                        Don't just agree. <span class="shimmer-text animate-shimmer">Understand.</span>
+                    </h1>
+                    <p class="text-gray-400 text-lg">AI-powered forensics for Terms of Service & Privacy Policies.</p>
+                </header>
+
+                <div class="relative z-10 w-full max-w-[850px] px-12 space-y-6">
+                    <!-- Tabs -->
+                    <div class="flex p-1.5 bg-white/5 rounded-2xl border border-white/10 relative">
+                        <button id="text-tab-btn" class="flex-1 py-3 px-6 rounded-xl bg-primary text-white shadow-lg font-bold transition-all relative z-10" data-tab="text">
+                            <i class="fas fa-file-alt mr-2"></i> Paste Terms
+                            <span id="text-badge" class="badge hidden absolute -top-1 -right-1 w-3 h-3 bg-white rounded-full border-2 border-primary"></span>
+                        </button>
+                        <button id="url-tab-btn" class="flex-1 py-3 px-6 rounded-xl text-gray-400 hover:text-white font-bold transition-all relative z-10" data-tab="url">
+                            <i class="fas fa-link mr-2"></i> Website URL
+                            <span id="url-badge" class="badge hidden absolute -top-1 -right-1 w-3 h-3 bg-white rounded-full border-2 border-primary"></span>
+                        </button>
+                    </div>
+
+                    <!-- Inputs -->
+                    <div class="relative min-h-[300px]">
+                        <div id="text-tab-content" class="block">
+                            <textarea id="tos-input" class="w-full h-72 bg-black/40 border border-white/10 rounded-2xl p-8 font-mono text-sm text-blue-100 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all resize-none custom-scrollbar" placeholder="Paste the legal text here..."></textarea>
+                        </div>
+                        <div id="url-tab-content" class="hidden py-12">
+                            <input type="url" id="tos-url" class="w-full bg-black/40 border border-white/10 rounded-2xl p-8 font-mono text-lg text-blue-100 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all" placeholder="https://example.com/terms-and-conditions">
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="flex gap-4">
+                        <button id="analyze-btn" disabled class="magnetic-hover flex-[2] py-5 bg-white text-black font-black text-xl rounded-2xl transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed group">
+                            <span class="btn-text">Initializing AI...</span>
+                            <i class="fas fa-bolt group-hover:animate-pulse text-primary"></i>
+                        </button>
+                        <button id="paste-btn" class="flex-1 py-5 bg-white/10 text-white font-bold rounded-2xl hover:bg-white/20 transition-all border border-white/10">
+                            <i class="fas fa-clipboard mr-2"></i> Paste
+                        </button>
+                        <button id="clear-btn" class="px-8 py-5 bg-white/5 text-gray-400 font-bold rounded-2xl hover:text-danger transition-all border border-white/5">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+        </main>
+
+        <!-- BEGIN: Interface Beta (Intelligence Dashboard) -->
+        <main class="hidden absolute inset-0 w-full h-full bg-cover bg-center transition-all duration-700 opacity-0 z-20" id="interface-beta" style="background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=2070');">
+            <!-- Dashboard Overlay -->
+            <div class="absolute inset-0 bg-slate-950/95 backdrop-blur-md"></div>
+            
+            <div class="relative z-30 flex h-full p-10 gap-10 overflow-hidden">
+                <!-- Left Sidebar: The Score -->
+                <aside class="w-[380px] glass-effect rounded-[2.5rem] p-8 flex flex-col items-center shadow-inner overflow-y-auto custom-scrollbar">
+                    <h3 class="text-xs uppercase tracking-[0.3em] text-primary font-black mb-12 opacity-70">Threat Assessment</h3>
+                    
+                    <!-- Premium Gauge -->
+                    <div class="relative w-64 h-32 mb-8 overflow-hidden">
+                        <svg class="w-full h-full" viewBox="0 0 100 50">
+                            <path d="M 10 45 A 35 35 0 0 1 90 45" fill="none" stroke="#1e293b" stroke-width="8" stroke-linecap="round"/>
+                            <path id="gauge-fill" d="M 10 45 A 35 35 0 0 1 90 45" fill="none" stroke="#22c55e" stroke-width="8" stroke-linecap="round" stroke-dasharray="125.6" stroke-dashoffset="125.6" style="transition: stroke-dashoffset 2s cubic-bezier(0.34, 1.56, 0.64, 1);"/>
+                        </svg>
+                        <div class="absolute bottom-0 left-1/2 -ml-0.5 w-1 h-24 bg-white rounded-full risk-needle transform rotate-[-90deg]" id="risk-needle"></div>
+                    </div>
+
+                    <div class="text-center mb-12">
+                        <div id="risk-label" class="text-6xl font-black text-primary tracking-tighter mb-2">0%</div>
+                        <p id="risk-desc" class="text-gray-400 font-medium uppercase tracking-widest text-xs">Awaiting Analysis</p>
+                    </div>
+
+                    <div class="w-full space-y-4 mt-auto">
+                        <div class="bg-white/5 p-5 rounded-2xl border border-white/10 flex justify-between items-center">
+                            <div class="flex flex-col">
+                                <span class="text-[10px] text-gray-500 uppercase font-bold tracking-widest mb-1">Total Analysis</span>
+                                <span id="total-clauses" class="text-xl font-black">0</span>
+                            </div>
+                            <div class="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-list-ol text-primary text-sm"></i>
+                            </div>
+                        </div>
+                        <div class="bg-white/5 p-5 rounded-2xl border border-white/10 flex justify-between items-center">
+                            <div class="flex flex-col">
+                                <span class="text-[10px] text-gray-500 uppercase font-bold tracking-widest mb-1">High Risk Detected</span>
+                                <span id="unfair-count" class="text-xl font-black text-danger">0</span>
+                            </div>
+                            <div class="w-10 h-10 bg-danger/10 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-exclamation-triangle text-danger text-sm"></i>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Center Pane: Annotated Document -->
+                <section class="flex-1 glass-effect rounded-[2.5rem] flex flex-col overflow-hidden shadow-2xl">
+                    <header class="p-6 border-b border-white/10 flex justify-between items-center bg-white/5">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-primary/20 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-search text-primary"></i>
+                            </div>
+                            <h2 class="text-lg font-bold tracking-tight uppercase tracking-widest text-white">Document Intelligence</h2>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <!-- Theme Toggle -->
+                            <button id="theme-toggle" class="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center hover:bg-white/10 transition-all border border-white/10 text-gray-400 hover:text-white" title="Toggle Reading Mode">
+                                <i class="fas fa-moon text-sm" id="theme-icon"></i>
+                            </button>
+                            <button id="new-analysis-btn" class="px-5 py-2 bg-white text-black font-bold rounded-xl text-xs hover:scale-105 transition-all">
+                                New Analysis
+                            </button>
+                        </div>
+                    </header>
+                    <div id="annotated-text" class="flex-1 overflow-y-auto p-10 custom-scrollbar text-gray-300 leading-relaxed text-lg scroll-smooth transition-colors duration-500">
+                        <!-- AI Analysis will be injected here -->
+                    </div>
+                </section>
+
+                <!-- Right Rail: Quick Insights -->
+                <aside class="w-80 flex flex-col gap-6 overflow-hidden">
+                    <div class="glass-effect rounded-[2rem] p-6 h-full flex flex-col overflow-hidden">
+                        <h3 class="text-xs uppercase tracking-[0.3em] text-primary font-black mb-6">Key Observations</h3>
+                        <div id="insights-list" class="space-y-4 custom-scrollbar overflow-y-auto flex-1 pr-2">
+                            <!-- Insight items -->
+                        </div>
+                        <button id="export-btn" class="w-full py-4 mt-6 bg-primary text-white font-black rounded-2xl shadow-[0_0_20px_rgba(67,97,238,0.4)] hover:scale-[1.02] active:scale-95 transition-all text-sm">
+                            Export PDF Report
+                        </button>
+                    </div>
+                </aside>
+            </div>
+
+            <!-- Loading Overlay -->
+            <div id="loader" class="hidden absolute inset-0 z-[100] flex items-center justify-center overflow-hidden" style="background: radial-gradient(circle at center, #0f111a 0%, #050508 100%);">
+                <!-- Cinematic Atmosphere Overlay -->
+                <div class="fixed inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none"></div>
+                
+                <!-- Visual Core -->
+                <div class="relative flex flex-col items-center justify-center w-full max-w-4xl px-6">
+                    <!-- Modern 3D Crystalline/Geometric Object -->
+                    <div class="mb-16 animate-fade-in flex flex-col items-center">
+                        <div class="crystalline-object animate-float">
+                            <!-- Morphing Geometry -->
+                            <div class="crystal-layer animate-morph animate-spin-slow opacity-60"></div>
+                            <div class="crystal-layer animate-morph animate-spin-reverse opacity-40 scale-90" style="animation-delay: -2s"></div>
+                            <div class="crystal-layer animate-morph animate-spin-slow opacity-20 scale-75" style="animation-delay: -4s"></div>
+                            <!-- Core Pulsing Node -->
+                            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-nexus-indigo/40 rounded-full blur-xl animate-pulse"></div>
+                            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-white rounded-full shadow-[0_0_25px_#4361ee] z-10"></div>
+                            <!-- Loading Text Integrated in Center -->
+                            <div class="absolute inset-0 flex items-center justify-center pointer-events-none flex-col">
+                                <span class="percentage-display mb-2" id="progress-counter">0%</span>
+                                <span class="loading-label text-[10px] tracking-[0.4em] text-white/80 animate-letter-spacing">LOADING</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Status Interface -->
+                    <div class="text-center space-y-6 animate-fade-in">
+                        <div class="flex flex-col items-center space-y-4">
+                            <!-- Neural Mapping Stream Animation -->
+                            <div class="flex items-center space-x-8 opacity-40">
+                                <div class="neural-node"></div>
+                                <div class="h-[1px] w-24 bg-gradient-to-r from-transparent via-nexus-indigo to-transparent relative overflow-hidden">
+                                    <div class="absolute inset-0 bg-white/40 w-1/4 animate-[move-right_2s_linear_infinite]" style="animation: moveRight 1.5s linear infinite;"></div>
+                                </div>
+                                <div class="neural-node" style="animation-delay: -0.5s"></div>
+                                <div class="h-[1px] w-24 bg-gradient-to-r from-transparent via-nexus-indigo to-transparent relative overflow-hidden">
+                                    <div class="absolute inset-0 bg-white/40 w-1/4 animate-[move-right_2s_linear_infinite]" style="animation: moveRight 1.5s linear infinite; animation-delay: -0.7s;"></div>
+                                </div>
+                                <div class="neural-node" style="animation-delay: -1s"></div>
+                            </div>
+                            <p id="loading-status" class="text-nexus-indigo/60 font-mono tracking-[0.5em] text-[11px] uppercase transition-all duration-500 min-h-[20px]">
+                              Analyzing Clause Density...
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Labels -->
+                <footer class="absolute bottom-12 left-0 w-full flex justify-around opacity-20 text-[10px] font-mono tracking-widest pointer-events-none z-20">
+                    <div class="hidden md:block">TX_ID: <span id="tx-id-display">0x94A...C21</span></div>
+                    <div class="hidden md:block">NEURAL_LOAD: <span id="neural-load-display">87.4%</span></div>
+                    <div class="hidden md:block">SYNC_STATUS: ENCRYPTED</div>
+                </footer>
+            </div>
+
+            <!-- Back to Top -->
+            <button id="back-to-top" class="fixed bottom-12 right-12 w-14 h-14 bg-primary text-white rounded-full shadow-[0_0_30px_rgba(67,97,238,0.6)] flex items-center justify-center transition-all hover:scale-110 active:scale-90 hidden z-50" title="Back to Top">
+                <i class="fas fa-chevron-up text-xl"></i>
+            </button>
+        </main>
+    </div>
+
+    <script>
+        // DOM Elements
+        const alpha = document.getElementById('interface-alpha');
+        const beta = document.getElementById('interface-beta');
+        const loader = document.getElementById('loader');
+        
+        const analyzeBtn = document.getElementById('analyze-btn');
+        const clearBtn = document.getElementById('clear-btn');
+        const pasteBtn = document.getElementById('paste-btn');
+        const textTabBtn = document.getElementById('text-tab-btn');
+        const urlTabBtn = document.getElementById('url-tab-btn');
+        const newAnalysisBtn = document.getElementById('new-analysis-btn');
+        const backToTopBtn = document.getElementById('back-to-top');
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const exportBtn = document.getElementById('export-btn');
+
+        const tosInput = document.getElementById('tos-input');
+        const tosUrl = document.getElementById('tos-url');
+        const textTabContent = document.getElementById('text-tab-content');
+        const urlTabContent = document.getElementById('url-tab-content');
+        
+        const statusDot = document.getElementById('status-dot');
+        const statusText = document.getElementById('status-text');
+        const textBadge = document.getElementById('text-badge');
+        const urlBadge = document.getElementById('url-badge');
+
+        const annotatedText = document.getElementById('annotated-text');
+        const riskLabel = document.getElementById('risk-label');
+        const riskDesc = document.getElementById('risk-desc');
+        const gaugeFill = document.getElementById('gauge-fill');
+        const riskNeedle = document.getElementById('risk-needle');
+        const totalClausesSpan = document.getElementById('total-clauses');
+        const unfairCountSpan = document.getElementById('unfair-count');
+        const insightsList = document.getElementById('insights-list');
+
+        let activeTab = 'text';
+
+        // 1. System Health Check
+        async function checkStatus() {
+            try {
+                const response = await fetch('http://127.0.0.1:5000/health');
+                if (response.ok) {
+                    statusDot.className = 'dot online';
+                    statusText.textContent = 'AI System Online';
+                    analyzeBtn.disabled = false;
+                    analyzeBtn.querySelector('.btn-text').textContent = 'Execute Analysis';
+                } else {
+                    statusDot.className = 'dot offline';
+                    statusText.textContent = 'AI Offline';
+                }
+            } catch (err) {
+                statusDot.className = 'dot offline';
+                statusText.textContent = 'AI Offline';
+            }
+        }
+        checkStatus();
+
+        // Export Logic
+        exportBtn.addEventListener('click', () => {
+            window.print();
+        });
+
+        // Theme Toggle Logic
+        themeToggle.addEventListener('click', () => {
+            annotatedText.classList.toggle('light-mode');
+            if (annotatedText.classList.contains('light-mode')) {
+                themeIcon.className = 'fas fa-sun text-sm';
+                themeToggle.classList.add('text-yellow-400');
+            } else {
+                themeIcon.className = 'fas fa-moon text-sm';
+                themeToggle.classList.remove('text-yellow-400');
+            }
+        });
+
+        // 2. Tab Management
+        textTabBtn.addEventListener('click', () => {
+            activeTab = 'text';
+            textTabBtn.className = 'flex-1 py-3 px-6 rounded-xl bg-primary text-white shadow-lg font-bold transition-all relative z-10';
+            urlTabBtn.className = 'flex-1 py-3 px-6 rounded-xl text-gray-400 hover:text-white font-bold transition-all relative z-10';
+            textTabContent.classList.remove('hidden');
+            urlTabContent.classList.add('hidden');
+            updateBadges();
+            
+            if (tosInput.value.trim() === '') {
+                pasteFromClipboard();
+            }
+        });
+
+        urlTabBtn.addEventListener('click', () => {
+            activeTab = 'url';
+            urlTabBtn.className = 'flex-1 py-3 px-6 rounded-xl bg-primary text-white shadow-lg font-bold transition-all relative z-10';
+            textTabBtn.className = 'flex-1 py-3 px-6 rounded-xl text-gray-400 hover:text-white font-bold transition-all relative z-10';
+            urlTabContent.classList.remove('hidden');
+            textTabContent.classList.add('hidden');
+            updateBadges();
+        });
+
+        function updateBadges() {
+            if (activeTab === 'url' && tosInput.value.trim().length > 0) textBadge.classList.remove('hidden');
+            else textBadge.classList.add('hidden');
+            
+            if (activeTab === 'text' && tosUrl.value.trim().length > 0) urlBadge.classList.remove('hidden');
+            else urlBadge.classList.add('hidden');
+        }
+
+        tosInput.addEventListener('input', updateBadges);
+        tosUrl.addEventListener('input', updateBadges);
+
+        // 3. Clipboard Functionality
+        async function pasteFromClipboard() {
+            try {
+                if (!navigator.clipboard) return;
+                const text = await navigator.clipboard.readText();
+                if (text) {
+                    if (activeTab === 'text') tosInput.value = text;
+                    else tosUrl.value = text;
+                    updateBadges();
+                }
+            } catch (err) {
+                console.warn('Clipboard access denied.');
+            }
+        }
+        pasteBtn.addEventListener('click', pasteFromClipboard);
+
+        clearBtn.addEventListener('click', () => {
+            tosInput.value = '';
+            tosUrl.value = '';
+            updateBadges();
+        });
+
+        // 4. Analysis Execution
+        analyzeBtn.addEventListener('click', async () => {
+            const payload = {};
+            if (activeTab === 'text') {
+                if (!tosInput.value.trim()) return alert('Input required.');
+                payload.text = tosInput.value.trim();
+            } else {
+                if (!tosUrl.value.trim()) return alert('URL required.');
+                payload.url = tosUrl.value.trim();
+            }
+
+            // Transition: Alpha -> Loader
+            loader.classList.remove('hidden');
+            alpha.classList.add('opacity-0');
+            
+            // Start Loading Animation Logic
+            const statusTextEl = document.getElementById('loading-status');
+            const progressText = document.getElementById('progress-counter');
+            const messages = [
+              'Analyzing Clause Density...',
+              'Mapping Neural Liabilities...',
+              'Deconstructing Legal Jargon...',
+              'Extracting Risk Vectors...',
+              'Synthesizing Ethics Core...'
+            ];
+            let msgIndex = 0;
+            let currentProgress = 1;
+            progressText.innerText = currentProgress + '%';
+            document.getElementById('tx-id-display').innerText = '0x' + Math.random().toString(16).substr(2, 6).toUpperCase() + '...';
+            
+            const msgInterval = setInterval(() => {
+              statusTextEl.style.opacity = 0;
+              statusTextEl.style.transform = 'translateY(5px)';
+              setTimeout(() => {
+                msgIndex = (msgIndex + 1) % messages.length;
+                statusTextEl.innerText = messages[msgIndex];
+                statusTextEl.style.opacity = 1;
+                statusTextEl.style.transform = 'translateY(0px)';
+                document.getElementById('neural-load-display').innerText = (Math.random() * 20 + 75).toFixed(1) + '%';
+              }, 400);
+            }, 3000);
+
+            // Fake progress loading up to 90%
+            const progInterval = setInterval(() => {
+              if (currentProgress < 90) {
+                currentProgress += Math.floor(Math.random() * 5) + 1;
+                if (currentProgress > 90) currentProgress = 90;
+                progressText.innerText = currentProgress + '%';
+              }
+            }, 300);
+            
+            try {
+                const response = await fetch('http://127.0.0.1:5000/analyze', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'X-API-KEY': 'tos_analyzer_secret_key_2024' },
+                    body: JSON.stringify(payload),
+                });
+
+                const data = await response.json();
+                
+                // Finish progress to 100%
+                clearInterval(progInterval);
+                clearInterval(msgInterval);
+                currentProgress = 100;
+                progressText.innerText = '100%';
+                statusTextEl.innerText = 'Analysis Complete!';
+                
+                if (!response.ok) throw new Error(data.error || 'Engine Failure');
+
+                displayResults(data);
+            } catch (err) {
+                clearInterval(progInterval);
+                clearInterval(msgInterval);
+                alert('Error: ' + err.message);
+                alpha.classList.remove('opacity-0');
+                loader.classList.add('hidden');
+            }
+        });
+
+        function displayResults(data) {
+            // Transition: Loader -> Beta
+            setTimeout(() => {
+                loader.classList.add('hidden');
+                alpha.classList.add('hidden');
+                beta.classList.remove('hidden');
+                setTimeout(() => {
+                    beta.classList.remove('opacity-0');
+                    beta.classList.add('opacity-100');
+                }, 50);
+
+                // 1. Update Metrics
+                totalClausesSpan.textContent = data.total;
+                unfairCountSpan.textContent = data.unfair_count;
+                
+                const score = data.risk_score;
+                riskLabel.textContent = `${score}%`;
+                riskDesc.textContent = data.risk_level;
+                
+                // Needle Animation (-90deg to +85deg max)
+                let needleRotation = -90 + (score * 1.8);
+                if (needleRotation > 85) needleRotation = 85;
+                riskNeedle.style.transform = `rotate(${needleRotation}deg)`;
+                
+                // Gauge Color
+                const dashOffset = 125.6 * (1 - score/100);
+                gaugeFill.style.strokeDashoffset = dashOffset;
+                if (score < 35) { gaugeFill.style.stroke = '#22c55e'; riskLabel.className = 'text-6xl font-black text-green-500 tracking-tighter mb-2'; }
+                else if (score < 65) { gaugeFill.style.stroke = '#f97316'; riskLabel.className = 'text-6xl font-black text-orange-500 tracking-tighter mb-2'; }
+                else { gaugeFill.style.stroke = '#ef4444'; riskLabel.className = 'text-6xl font-black text-danger tracking-tighter mb-2'; }
+
+                // 2. Render Annotated Document
+                annotatedText.innerHTML = '';
+                insightsList.innerHTML = '';
+                const uniqueReasons = new Set();
+
+                if (data.results && data.results.length > 0) {
+                    data.results.forEach((item, index) => {
+                        const span = document.createElement('span');
+                        span.className = 'clause-highlight stagger-in';
+                        span.style.animationDelay = `${index * 0.05}s`;
+                        span.textContent = item.text;
+                        const clauseId = `clause-${index}`;
+                        span.id = clauseId;
+
+                        if (item.label === 'Unfair') {
+                            let level = 'high-risk';
+                            if (item.confidence < 60) level = 'low-risk';
+                            else if (item.confidence < 80) level = 'med-risk';
+                            
+                            span.classList.add('unfair', level);
+                            
+                            // Tooltip
+                            const tooltip = document.createElement('span');
+                            tooltip.className = 'custom-tooltip';
+                            const strong = document.createElement('strong');
+                            strong.textContent = `Risk: ${item.confidence}%`;
+                            tooltip.appendChild(strong);
+                            tooltip.appendChild(document.createElement('br'));
+                            tooltip.appendChild(document.createTextNode(item.reason));
+                            span.appendChild(tooltip);
+
+                            // Collect unique reasons for insights rail
+                            if (!uniqueReasons.has(item.reason)) {
+                                uniqueReasons.add(item.reason);
+                                addInsightItem(item.reason, clauseId);
+                            }
+                        }
+                        annotatedText.appendChild(span);
+                        annotatedText.appendChild(document.createTextNode(' '));
+                    });
+                } else {
+                    annotatedText.innerHTML = '<p class="text-center text-gray-500 italic mt-20">No clauses identified for analysis.</p>';
+                }
+            }, 1000);
+        }
+
+        function addInsightItem(reason, targetId) {
+            const div = document.createElement('div');
+            div.className = 'p-4 bg-white/5 border border-white/10 rounded-2xl stagger-in cursor-pointer hover:bg-white/10 hover:border-primary/50 transition-all group';
+            div.innerHTML = `
+                <div class="flex justify-between items-start mb-1">
+                    <h4 class="text-white font-bold text-xs">Issue Detected</h4>
+                    <i class="fas fa-external-link-alt text-[10px] text-primary opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                </div>
+                <p class="text-[11px] text-gray-400">${reason}</p>
+            `;
+            
+            div.onclick = () => {
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    target.classList.remove('flash-highlight');
+                    void target.offsetWidth; 
+                    target.classList.add('flash-highlight');
+                    setTimeout(() => target.classList.remove('flash-highlight'), 2000);
+                }
+            };
+            
+            insightsList.appendChild(div);
+        }
+
+        // 5. Navigation & Reset
+        newAnalysisBtn.addEventListener('click', () => {
+            beta.classList.add('opacity-0');
+            setTimeout(() => {
+                beta.classList.add('hidden');
+                alpha.classList.remove('hidden');
+                alpha.classList.remove('opacity-0');
+                tosInput.value = '';
+                tosUrl.value = '';
+                annotatedText.innerHTML = '';
+                insightsList.innerHTML = '';
+                annotatedText.classList.remove('light-mode');
+                themeIcon.className = 'fas fa-moon text-sm';
+                themeToggle.classList.remove('text-yellow-400');
+                updateBadges();
+            }, 700);
+        });
+
+        annotatedText.addEventListener('scroll', () => {
+            if (annotatedText.scrollTop > 400) backToTopBtn.classList.remove('hidden');
+            else backToTopBtn.classList.add('hidden');
+        });
+
+        backToTopBtn.addEventListener('click', () => {
+            annotatedText.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+    </script>
+</body>
+</html>

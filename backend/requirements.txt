@@ -1,0 +1,14 @@
+flask
+flask-cors
+requests
+beautifulsoup4
+torch
+transformers
+safetensors
+pandas
+datasets
+celery
+redis
+flask-limiter
+playwright
+python-dotenv

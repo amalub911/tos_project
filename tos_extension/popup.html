@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body { width: 400px; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; background: #f9fafb; }
+.container { padding: 15px; }
+h3 { margin-top: 0; color: #111827; }
+button { 
+    padding: 10px; margin-top: 10px; width: 100%; cursor: pointer; 
+    background: #2563eb; color: white; border: none; border-radius: 6px; 
+    font-weight: 600; transition: background 0.2s;
+}
+button:hover { background: #1d4ed8; }
+button:disabled { background: #94a3b8; cursor: not-allowed; }
+
+#spinner {
+    display: none; border: 3px solid #e5e7eb; border-top: 3px solid #2563eb;
+    border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite;
+    margin: 10px auto;
+}
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+.status-text { text-align: center; font-size: 13px; color: #6b7280; margin: 5px 0; }
+
+.summary-card {
+    background: white; border: 1px solid #e5e7eb; border-radius: 8px;
+    padding: 12px; margin-top: 15px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+.clause-list { margin-top: 15px; max-height: 300px; overflow-y: auto; }
+.clause-item {
+    background: white; border: 1px solid #e5e7eb; border-radius: 6px;
+    padding: 10px; margin-bottom: 8px; cursor: pointer; font-size: 12px;
+    transition: transform 0.1s, border-color 0.2s;
+}
+.clause-item:hover { border-color: #2563eb; transform: translateX(2px); }
+.risk-tag { 
+    display: inline-block; padding: 2px 6px; border-radius: 4px; 
+    font-size: 10px; font-weight: bold; text-transform: uppercase; margin-bottom: 5px;
+}
+.tag-unfair { background: #fee2e2; color: #dc2626; }
+.tag-review { background: #fef9c3; color: #854d0e; }
+
+.clause-text { color: #374151; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.feedback-btns { margin-top: 8px; display: flex; gap: 5px; }
+.f-btn { 
+    padding: 3px 8px; font-size: 10px; border: 1px solid #d1d5db; 
+    background: white; border-radius: 4px; cursor: pointer; 
+}
+.f-btn:hover { background: #f3f4f6; }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h3>ToS Shield AI</h3>
+    <button id="analyze">Analyze This Document</button>
+    <div id="spinner"></div>
+    <div id="status" class="status-text"></div>
+    
+    <div id="result-container" style="display:none;">
+        <div class="summary-card" id="summary"></div>
+        <div class="clause-list" id="clause-list"></div>
+    </div>
+</div>
+
+<script src="config.js"></script>
+<script src="popup.js"></script>
+</body>
+</html>
