@@ -205,3 +205,24 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+
+# Model files
+*.bin
+*.pt
+*.h5
+*.zip
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node (if any later)
+node_modules/
